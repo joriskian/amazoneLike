@@ -51,7 +51,10 @@ export default function ProductScreen() {
           <List>
             <ListItem>
               {/* SEO : the most important part of the webpage must be  'h1' to respect the serachEngine optimazation guideline */}
-              <Typography component="h1">{product.name}</Typography>
+              <Typography component="h1" variant="h1">
+                {product.name}
+              </Typography>{' '}
+              {/* must change the variant to use material-ui theme  */}
             </ListItem>
             <ListItem>
               <Typography>Category: {product.category}</Typography>
