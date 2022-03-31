@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import '../styles/globals.css';
+import { StoreProvider } from '../utils/Store';
 
 function MyApp({ Component, pageProps }) {
   // prevent the default styles with server-side-rendering in material-ui
@@ -9,7 +10,12 @@ function MyApp({ Component, pageProps }) {
       jssStyles.parentElement.removeChild(jssStyles); // remove the style if exist
     }
   }, []);
-  return <Component {...pageProps} />;
+  // need to wrap the component in the StoreProvider to use 'context'
+  return (
+    <StoreProvider>
+      <Component {...pageProps} />
+    </StoreProvider>
+  );
 }
 
 export default MyApp;
