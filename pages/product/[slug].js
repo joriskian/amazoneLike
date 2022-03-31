@@ -4,9 +4,9 @@ import React from 'react';
 import data from '../../utils/data';
 
 export default function ProductScreen() {
-  // utilise le router de next
+  // utilise le router de next pour
   const router = useRouter();
-  // recupere le slug
+  // recuperer le slug
   const { slug } = router.query;
   const product = data.products.find((e) => e.slug === slug);
   if (!product) {
