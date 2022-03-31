@@ -11,12 +11,14 @@ import UseStyles from '../utils/styles';
 import NextLink from 'next/link';
 import { StylesContext } from '@material-ui/styles';
 
-export default function Layout({ children }) {
+export default function Layout({ title, description, children }) {
   const classes = UseStyles();
   return (
     <div>
       <Head>
-        <title> amazone like </title>
+        <title> {title ? `${title} - Amazone Like` : `Amazone Like`} </title>
+        {/* SEO : if description exist :  render the metatag */}
+        {description && <meta name="description" content={description}></meta>}
       </Head>
       <AppBar position="static" className={classes.navBar}>
         <Toolbar>
