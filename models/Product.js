@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-// id Product existe set the value in Product otherwise create a new one
+// if Product existe set the value in Product otherwise create a new one
 const Product =
   mongoose.model.Product || mongoose.model('Product', productSchema);
 
