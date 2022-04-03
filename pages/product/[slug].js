@@ -1,7 +1,7 @@
 // [name].js to create a parameter
-import { useRouter } from 'next/router';
+
 import React from 'react';
-import data from '../../utils/data';
+
 import Layout from '../../components/Layout';
 import NextLink from 'next/link';
 import {
@@ -15,15 +15,15 @@ import {
 } from '@material-ui/core';
 import UseStyles from '../../utils/styles';
 import Image from 'next/image';
+import Product from '../../models/Product';
+import db from '../../utils/db';
 
-export default function ProductScreen() {
+export default function ProductScreen(props) {
+  // fetch  product  from getServerSideProps
+  const { product } = props;
   // recupère les styles
   const classes = UseStyles();
-  // utilise le router de next pour
-  const router = useRouter();
-  // recuperer le slug
-  const { slug } = router.query;
-  const product = data.products.find((e) => e.slug === slug);
+
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -108,4 +108,18 @@ export default function ProductScreen() {
       </Grid>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { slug } = params;
+  await db.connect();
+  // must put .lean() function do get a POJO ( a Javascript Objet !!!)
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: db.convertDocToObj(product),
+    }, // will be passed to the page component as props
+  };
 }
