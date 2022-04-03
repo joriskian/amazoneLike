@@ -112,6 +112,7 @@ export default function ProductScreen(props) {
 
 export async function getServerSideProps(context) {
   const { params } = context;
+  // get the slug to fing the good product
   const { slug } = params;
   await db.connect();
   // must put .lean() function do get a POJO ( a Javascript Objet !!!)
