@@ -1,3 +1,5 @@
+// mongodb object
+
 import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema(
@@ -21,6 +23,6 @@ const productSchema = new mongoose.Schema(
 
 // if Product existe set the value in Product otherwise create a new one
 const Product =
-  mongoose.model.Product || mongoose.model('Product', productSchema);
+  mongoose.models.Product || mongoose.model('Product', productSchema);
 
 export default Product;
