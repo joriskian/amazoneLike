@@ -19,8 +19,11 @@ import Product from '../../models/Product';
 import db from '../../utils/db';
 import { Store } from '../../utils/Store';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function ProductScreen(props) {
+  // recupère le router de next
+  const router = useRouter();
   // use dispatch // get context
   const { dispatch } = useContext(Store);
   // fetch  product  from getServerSideProps
@@ -40,6 +43,8 @@ export default function ProductScreen(props) {
       return;
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+    // redirect users to cart Screen
+    router.push('/cart');
   };
   return (
     <Layout title={product.name} description={product.description}>
