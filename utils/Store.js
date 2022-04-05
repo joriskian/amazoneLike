@@ -8,7 +8,9 @@ const initalSate = {
   // recupere le cookie darkMode
   darkMode: jsCookie.get('darkMode') === 'ON' ? true : false,
   cart: {
-    cartItems: [],
+    cartItems: jsCookie.get('cartItems')
+      ? JSON.parse(jsCookie.get('cartItems'))
+      : [],
   },
 };
 // creating a reducer
@@ -31,6 +33,8 @@ function reducer(state, action) {
             item.name === existItem.name ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
+      // erngistre le cookie
+      jsCookie.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     default:
