@@ -39,7 +39,7 @@ export default function ProductScreen(props) {
   const addToCartHandler = async () => {
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock <= 0) {
-      window.alert('sorry, no more product on stock !!!');
+      window.alert('sorry, no more product in stock !!!');
       return;
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });

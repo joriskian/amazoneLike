@@ -4,7 +4,7 @@ import { createContext, useReducer } from 'react';
 // create context
 export const Store = createContext();
 // define inital state
-const initalSate = {
+const initialSate = {
   // recupere le cookie darkMode
   darkMode: jsCookie.get('darkMode') === 'ON' ? true : false,
   cart: {
@@ -30,7 +30,7 @@ function reducer(state, action) {
       );
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item.name === existItem.name ? newItem : item
+            item._id === existItem._id ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
       // saving cartItems's cookie
@@ -44,7 +44,7 @@ function reducer(state, action) {
 
 // use reducer
 export function StoreProvider(props) {
-  const [state, dispatch] = useReducer(reducer, initalSate);
+  const [state, dispatch] = useReducer(reducer, initialSate);
   const value = { state, dispatch };
   // Store.Provider is a ReactComponent, is a wrapper for all the components of the application
   return <Store.Provider value={value}>{props.children}</Store.Provider>;

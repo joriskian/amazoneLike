@@ -17,40 +17,38 @@ export default function Home(props) {
   const { products } = props;
   return (
     <Layout>
-      <div>
-        <h1>Products</h1>
-        <Grid container spacing={3}>
-          {/*no more need{data.products.map((product) => (  */}
-          {products.map((product) => (
-            <Grid item md={4} key={product.name}>
-              <Card>
-                {/* NextLink pour router */}
-                <NextLink href={`/product/${product.slug}`} passHref>
-                  {/* pour les rendre cliquable */}
-                  <CardActionArea>
-                    {/* pour gerer les images */}
-                    <CardMedia
-                      component="img"
-                      image={product.image}
-                      title={product.name}
-                    ></CardMedia>
-                    <CardContent>
-                      <Typography>{product.name}</Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </NextLink>
+      <h1>Products</h1>
+      <Grid container spacing={3}>
+        {/*no more need{data.products.map((product) => (  */}
+        {products.map((product) => (
+          <Grid item md={4} key={product.name}>
+            <Card>
+              {/* NextLink pour router */}
+              <NextLink href={`/product/${product.slug}`} passHref>
+                {/* pour les rendre cliquable */}
+                <CardActionArea>
+                  {/* pour gerer les images */}
+                  <CardMedia
+                    component="img"
+                    image={product.image}
+                    title={product.name}
+                  ></CardMedia>
+                  <CardContent>
+                    <Typography>{product.name}</Typography>
+                  </CardContent>
+                </CardActionArea>
+              </NextLink>
 
-                <CardActions>
-                  <Typography>${product.price}</Typography>
-                  <Button size="small" color="primary">
-                    Add to card
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+              <CardActions>
+                <Typography>${product.price}</Typography>
+                <Button size="small" color="primary">
+                  Add to card
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </Layout>
   );
 }
