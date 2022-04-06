@@ -76,9 +76,9 @@ function CartScreen() {
                       </TableCell>
                       <TableCell align="right">
                         <Select value={item.quantity}>
-                          {[...Array(item.countInStock).keys()].map((x) => (
-                            <MenuItem key={x + 1} value={x + 1}>
-                              {x + 1}
+                          {[...Array(item.countInStock).keys()].map((i) => (
+                            <MenuItem key={i + 1} value={i + 1}>
+                              {i + 1}
                             </MenuItem>
                           ))}
                         </Select>
