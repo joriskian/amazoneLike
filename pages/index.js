@@ -34,6 +34,10 @@ export default function Home(props) {
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     // if exist :  update else just put 1
     const quantity = existItem ? existItem.quantity + 1 : 1;
+    if (data.countInStock < quantity) {
+      window.alert('sorry, no more product in stock !!!');
+      return;
+    }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     // redirect users to cart Screen
     router.push('/cart');

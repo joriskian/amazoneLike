@@ -32,7 +32,7 @@ function CartScreen() {
   } = state;
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock <= 0) {
+    if (data.countInStock < quantity) {
       window.alert('sorry, no more product in stock !!!');
       return;
     }
