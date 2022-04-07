@@ -12,6 +12,11 @@ const initialSate = {
       ? JSON.parse(jsCookie.get('cartItems'))
       : [],
   },
+  user_info: {
+    cartItems: jsCookie.get('userInfo')
+      ? JSON.parse(jsCookie.get('userInfo'))
+      : null,
+  },
 };
 // creating a reducer
 function reducer(state, action) {
@@ -43,6 +48,9 @@ function reducer(state, action) {
       );
       jsCookie.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case 'USER_LOGIN': {
+      return { ...state, userInfo: action.payload };
     }
     default:
       return state;

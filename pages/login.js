@@ -6,14 +6,26 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Layout from '../components/Layout';
 import UseStyles from '../utils/styles';
 import NextLink from 'next/link';
 import axios from 'axios';
+import { Store } from '../utils/Store';
+import { useRouter } from 'next/router';
+import jsCookie from 'js-cookie';
 
 // react component must begin with capital letter
 export default function Login() {
+  const router = useRouter();
+  const redirect = router.query;
+  // use the context
+  const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
+  // si userInfo exist no need to go to login page
+  if (userInfo) {
+    router.push('/');
+  }
   const classes = UseStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,6 +36,10 @@ export default function Login() {
         email,
         password,
       });
+      // save data in react context
+      dispatch({ type: 'USER_LOGIN', payload: data });
+      jsCookie.set('userInfo', data);
+      router.push(redirect || '/');
       alert('succes login');
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message);
