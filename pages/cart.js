@@ -21,15 +21,27 @@ import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import NextLink from 'next/link';
 import Image from 'next/image';
+import axios from 'axios';
 
 function CartScreen() {
   // get acces to react context
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   //!!! get cart items : cartItems is in cart's object
   const {
     cart: { cartItems },
   } = state;
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock <= 0) {
+      window.alert('sorry, no more product in stock !!!');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+  };
 
+  const removeItemHandler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
@@ -88,7 +100,12 @@ function CartScreen() {
                         map each item to menu items
                         add 1 cause each value begin to 0
                         */}
-                        <Select value={item.quantity}>
+                        <Select
+                          value={item.quantity}
+                          onChange={(e) =>
+                            updateCartHandler(item, e.target.value)
+                          }
+                        >
                           {[...Array(item.countInStock).keys()].map((i) => (
                             <MenuItem key={i + 1} value={i + 1}>
                               {i + 1}
@@ -100,7 +117,11 @@ function CartScreen() {
                       <TableCell align="right">${item.price}</TableCell>
 
                       <TableCell align="right">
-                        <Button variant="contained" color="secondary">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => removeItemHandler(item)}
+                        >
                           x
                         </Button>
                       </TableCell>
@@ -133,5 +154,5 @@ function CartScreen() {
     </Layout>
   );
 }
-
+// convert to dynamic component
 export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });
