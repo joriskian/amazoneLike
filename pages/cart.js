@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import {
   Grid,
   Table,
@@ -11,6 +12,9 @@ import {
   Select,
   MenuItem,
   Button,
+  Card,
+  List,
+  ListItem,
 } from '@material-ui/core';
 import React, { useContext } from 'react';
 import Layout from '../components/Layout';
@@ -19,8 +23,9 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 
 function CartScreen() {
+  // get acces to react context
   const { state } = useContext(Store);
-  //!!! cartItems is in cart's object
+  //!!! get cart items : cartItems is in cart's object
   const {
     cart: { cartItems },
   } = state;
@@ -52,10 +57,11 @@ function CartScreen() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
+                  {/* all cart item will be convert to TableRow */}
                   {cartItems.map((item) => (
                     <TableRow key={item._id}>
                       <TableCell>
-                        <NextLink href={'/product/${item.slug}'} passHref>
+                        <NextLink href={`/product/${item.slug}`} passHref>
                           <Link>
                             <Image
                               src={item.image}
@@ -68,13 +74,20 @@ function CartScreen() {
                       </TableCell>
 
                       <TableCell>
-                        <NextLink href={'/product/${item.slug}'} passHref>
+                        {/* don't forget to put' `' instead of ''' */}
+                        <NextLink href={`/product/${item.slug}`} passHref>
                           <Link>
                             <Typography>{item.name} </Typography>
                           </Link>
                         </NextLink>
                       </TableCell>
                       <TableCell align="right">
+                        {/*
+                        create a array from 0 to countInStock
+                        get the keys (0 to countInStock-1 )
+                        map each item to menu items
+                        add 1 cause each value begin to 0
+                        */}
                         <Select value={item.quantity}>
                           {[...Array(item.countInStock).keys()].map((i) => (
                             <MenuItem key={i + 1} value={i + 1}>
@@ -97,10 +110,28 @@ function CartScreen() {
               </Table>
             </TableContainer>
           </Grid>
+          <Grid item md={3} xs={12}>
+            <Card>
+              <List>
+                <ListItem>
+                  <Typography variant="h2">
+                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    {''}items) : €
+                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                  </Typography>
+                </ListItem>
+                <ListItem>
+                  <Button variant="contained" color="primary" fullWidth>
+                    Check Out
+                  </Button>
+                </ListItem>
+              </List>
+            </Card>
+          </Grid>
         </Grid>
       )}
     </Layout>
   );
 }
 
-export default CartScreen;
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });

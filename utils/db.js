@@ -9,7 +9,7 @@ async function connect() {
     // on sort
     return;
   }
-  // si au moins une connection dans mongooe
+  // si au moins une connection dans mongoose
   if (mongoose.connections.length > 0) {
     // recupére la connection associé à l'instance mongoose
     connection.isConnected = mongoose.connections[0].readyState;
@@ -26,7 +26,7 @@ async function connect() {
   connection.isConnected = db.connections[0].readyState;
 }
 
-// empéche la deconnection de surchargé le processeur en mode dev
+// empéche la deconnection de surcharger le processeur en mode dev
 async function disconnect() {
   // si '.isConnected' existe
   if (connection.isConnected) {
