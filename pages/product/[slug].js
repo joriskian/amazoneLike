@@ -25,7 +25,7 @@ export default function ProductScreen(props) {
   // recupère le router de next
   const router = useRouter();
   // use dispatch // get context
-  const { dispatch } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   // fetch  product  from getServerSideProps
   const { product } = props;
   // recupère les styles
@@ -42,7 +42,13 @@ export default function ProductScreen(props) {
       window.alert('sorry, no more product in stock !!!');
       return;
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+
+    // find the quantity (via state) for the current product
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    // if exist :  update else just put 1
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     // redirect users to cart Screen
     router.push('/cart');
   };
