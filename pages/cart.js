@@ -21,9 +21,12 @@ import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import NextLink from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 function CartScreen() {
+  // get the router
+  const router = useRouter();
   // get acces to react context
   const { state, dispatch } = useContext(Store);
   //!!! get cart items : cartItems is in cart's object
@@ -41,6 +44,9 @@ function CartScreen() {
 
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+  const checkOutHandler = () => {
+    router.push('/shipping');
   };
   return (
     <Layout title="Shopping Cart">
@@ -142,7 +148,12 @@ function CartScreen() {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button variant="contained" color="primary" fullWidth>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={checkOutHandler}
+                  >
                     Check Out
                   </Button>
                 </ListItem>
