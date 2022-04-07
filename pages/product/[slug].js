@@ -37,16 +37,11 @@ export default function ProductScreen(props) {
 
   // addToCarthandler
   const addToCartHandler = async () => {
-    const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock <= 0) {
-      window.alert('sorry, no more product in stock !!!');
-      return;
-    }
-
     // find the quantity (via state) for the current product
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
     // if exist :  update else just put 1
     const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
       window.alert('sorry, no more product in stock !!!');
       return;
