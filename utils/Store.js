@@ -14,7 +14,7 @@ const initialSate = {
   },
   user_info: {
     cartItems: jsCookie.get('userInfo')
-      ? JSON.parse(jsCookie.get('userInfo'))
+      ? JSON.stringify(jsCookie.get('userInfo'))
       : null,
   },
 };
@@ -51,6 +51,9 @@ function reducer(state, action) {
     }
     case 'USER_LOGIN': {
       return { ...state, userInfo: action.payload };
+    }
+    case 'USER_LOGOUT': {
+      return { ...state, userInfo: null, cart: { cartItems: [] } };
     }
     default:
       return state;

@@ -6,7 +6,7 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import UseStyles from '../utils/styles';
 import NextLink from 'next/link';
@@ -18,14 +18,17 @@ import jsCookie from 'js-cookie';
 // react component must begin with capital letter
 export default function Login() {
   const router = useRouter();
-  const redirect = router.query;
+  const { redirect } = router.query;
   // use the context
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   // si userInfo exist no need to go to login page
-  if (userInfo) {
-    router.push('/');
-  }
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/');
+    }
+  }, []);
+
   const classes = UseStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,7 +43,7 @@ export default function Login() {
       dispatch({ type: 'USER_LOGIN', payload: data });
       jsCookie.set('userInfo', data);
       router.push(redirect || '/');
-      alert('succes login');
+      //alert('succes login');
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message);
     }
