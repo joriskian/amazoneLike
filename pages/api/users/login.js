@@ -27,7 +27,7 @@ handler.post(async (req, res) => {
       isAdmin: user.isAdmin,
     });
   } else {
-    res.status(401).send({ message: 'invalid user or password !' });
+    res.status(401).send({ message: 'invalid email or password !' });
   }
 });
 
