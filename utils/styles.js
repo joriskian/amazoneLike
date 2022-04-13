@@ -35,6 +35,16 @@ const UseStyles = makeStyles({
     color: '#ffffff',
     textTransform: 'initial',
   },
+  inputForm: {
+    display: 'block',
+    boxSizing: 'border-box',
+    width: '100%',
+    borderRadius: ' 4px',
+    border: '1px solid whit',
+    padding: '10px 15px',
+    marginBottom: '10px',
+    fontSize: '14px',
+  },
 });
 
 export default UseStyles;

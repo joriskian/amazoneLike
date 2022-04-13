@@ -7,7 +7,7 @@ export default function Shipping() {
   const router = useRouter();
 
   // use the context
-  const { state, dispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo } = state;
 
   // if userInfo doesn't exist redirect to login and after redirect to shipping
@@ -16,7 +16,7 @@ export default function Shipping() {
     if (!userInfo) {
       router.push('/login?redirect=/shipping');
     }
-  }, []);
+  }, [router, userInfo]);
 
   return <div>Shipping page</div>;
 }

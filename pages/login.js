@@ -1,23 +1,22 @@
 import {
-  Button,
   List,
   ListItem,
-  TextField,
   Typography,
+  TextField,
+  Button,
   Link,
 } from '@material-ui/core';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
-import UseStyles from '../utils/styles';
-import NextLink from 'next/link';
-import axios from 'axios';
 import { Store } from '../utils/Store';
-import { useRouter } from 'next/router';
-import jsCookie from 'js-cookie';
+import useStyles from '../utils/styles';
+import Cookies from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 
-// react component must begin with capital letter
 export default function Login() {
   const {
     handleSubmit,
@@ -26,18 +25,16 @@ export default function Login() {
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
-  const { redirect } = router.query;
-  // use the context
+  const { redirect } = router.query; // login?redirect=/shipping
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
-  // si userInfo exist no need to go to login page
   useEffect(() => {
     if (userInfo) {
       router.push('/');
     }
-  }, []);
+  }, [router, userInfo]);
 
-  const classes = UseStyles();
+  const classes = useStyles();
   const submitHandler = async ({ email, password }) => {
     closeSnackbar();
     try {
@@ -45,12 +42,9 @@ export default function Login() {
         email,
         password,
       });
-      // save data in react context
       dispatch({ type: 'USER_LOGIN', payload: data });
-      // save cookie
-      jsCookie.set('userInfo', data);
+      Cookies.set('userInfo', data);
       router.push(redirect || '/');
-      //alert('succes login');
     } catch (err) {
       enqueueSnackbar(
         err.response.data ? err.response.data.message : err.message,
@@ -72,14 +66,14 @@ export default function Login() {
               defaultValue=""
               rules={{
                 required: true,
-                patern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
               }}
               render={({ field }) => (
                 <TextField
                   variant="outlined"
                   fullWidth
                   id="email"
-                  label="E-Mail"
+                  label="Email"
                   inputProps={{ type: 'email' }}
                   error={Boolean(errors.email)}
                   helperText={
@@ -114,7 +108,7 @@ export default function Login() {
                   helperText={
                     errors.password
                       ? errors.password.type === 'minLength'
-                        ? 'Password length is a least 6'
+                        ? 'Password length is more than 5'
                         : 'Password is required'
                       : ''
                   }
@@ -125,11 +119,11 @@ export default function Login() {
           </ListItem>
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
-              LOGIN
+              Login
             </Button>
           </ListItem>
           <ListItem>
-            Don't have a account ? &nbsp;
+            Don&apos;t have an account? &nbsp;
             <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
               <Link>Register</Link>
             </NextLink>

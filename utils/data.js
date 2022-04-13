@@ -1,3 +1,4 @@
+import bcryptjs from 'bcryptjs';
 import bcrypt from 'bcryptjs';
 
 const data = {
@@ -12,6 +13,12 @@ const data = {
       name: 'philou',
       email: 'philou@gmail.com',
       password: bcrypt.hashSync('123456'),
+      isAdmin: false,
+    },
+    {
+      name: 'pierre',
+      email: 'pierre@gmail.com',
+      password: bcryptjs.hashSync('123456'),
       isAdmin: false,
     },
   ],

@@ -12,10 +12,10 @@ const initialSate = {
       ? JSON.parse(jsCookie.get('cartItems'))
       : [],
   },
-  user_info: {
+  userInfo: {
     cartItems: jsCookie.get('userInfo')
       ? JSON.stringify(jsCookie.get('userInfo'))
-      : null,
+      : [],
   },
 };
 // creating a reducer

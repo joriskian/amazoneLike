@@ -115,6 +115,7 @@ export default function Layout({ title, description, children }) {
                   )}
                 </Link>
               </NextLink>
+
               {/* if userInfo exist show the button */}
               {userInfo ? (
                 <>
@@ -123,6 +124,7 @@ export default function Layout({ title, description, children }) {
                     aria-haspopup="true"
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
+                    color="succes"
                   >
                     {userInfo.name}
                   </Button>
