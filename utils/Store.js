@@ -3,18 +3,22 @@ import { createContext, useReducer } from 'react';
 
 // create context
 export const Store = createContext();
-// define inital state
+// define initial state for 'reactContext'
 const initialSate = {
   // recupere le cookie darkMode
   darkMode: jsCookie.get('darkMode') === 'ON' ? true : false,
   cart: {
+    // get  initial values from cookies the
     cartItems: jsCookie.get('cartItems')
       ? JSON.parse(jsCookie.get('cartItems'))
       : [],
+    shippingAddress: jsCookie.get('shippingAddress')
+      ? JSON.parse(jsCookie.get('shippingAddress'))
+      : {},
   },
   userInfo: {
     cartItems: jsCookie.get('userInfo')
-      ? JSON.stringify(jsCookie.get('userInfo'))
+      ? JSON.parse(jsCookie.get('userInfo'))
       : [],
   },
 };
@@ -42,6 +46,7 @@ function reducer(state, action) {
       jsCookie.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    // remove the cartItem's cookies
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item) => item._id !== action.payload._id
@@ -49,6 +54,12 @@ function reducer(state, action) {
       jsCookie.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    // saving shipping adress in reactContext
+    case 'SAVE_SHIPPING_ADDRESS':
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      };
     case 'USER_LOGIN': {
       return { ...state, userInfo: action.payload };
     }
