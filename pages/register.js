@@ -1,23 +1,22 @@
 import {
-  Button,
   List,
   ListItem,
-  TextField,
   Typography,
+  TextField,
+  Button,
   Link,
 } from '@material-ui/core';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
-import UseStyles from '../utils/styles';
-import NextLink from 'next/link';
-import axios from 'axios';
 import { Store } from '../utils/Store';
-import { useRouter } from 'next/router';
-import jsCookie from 'js-cookie';
+import useStyles from '../utils/styles';
+import Cookies from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 
-// react component must begin with capital letter
 export default function Register() {
   const {
     handleSubmit,
@@ -29,17 +28,15 @@ export default function Register() {
   const { redirect } = router.query;
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
-  // si userInfo exist no need to go to login page
   useEffect(() => {
     if (userInfo) {
       router.push('/');
     }
-  }, []);
+  }, [router, userInfo]);
 
-  const classes = UseStyles();
-  const submitHandler = async (name, email, password, confirmPassword) => {
+  const classes = useStyles();
+  const submitHandler = async ({ name, email, password, confirmPassword }) => {
     closeSnackbar();
-    // if passwords don't match
     if (password !== confirmPassword) {
       enqueueSnackbar("Passwords don't match", { variant: 'error' });
       return;
@@ -50,17 +47,13 @@ export default function Register() {
         email,
         password,
       });
-      // save data in react context
       dispatch({ type: 'USER_LOGIN', payload: data });
-      // save cookie
-      jsCookie.set('userInfo', data);
+      Cookies.set('userInfo', data);
       router.push(redirect || '/');
     } catch (err) {
       enqueueSnackbar(
         err.response.data ? err.response.data.message : err.message,
-        {
-          variant: 'error',
-        }
+        { variant: 'error' }
       );
     }
   };
@@ -91,7 +84,7 @@ export default function Register() {
                   helperText={
                     errors.name
                       ? errors.name.type === 'minLength'
-                        ? 'Name Length is almost 2'
+                        ? 'Name length is more than 1'
                         : 'Name is required'
                       : ''
                   }
@@ -107,14 +100,14 @@ export default function Register() {
               defaultValue=""
               rules={{
                 required: true,
-                patern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
               }}
               render={({ field }) => (
                 <TextField
                   variant="outlined"
                   fullWidth
                   id="email"
-                  label="E-Mail"
+                  label="Email"
                   inputProps={{ type: 'email' }}
                   error={Boolean(errors.email)}
                   helperText={
@@ -149,7 +142,7 @@ export default function Register() {
                   helperText={
                     errors.password
                       ? errors.password.type === 'minLength'
-                        ? 'Password length is a least 6'
+                        ? 'Password length is more than 5'
                         : 'Password is required'
                       : ''
                   }
@@ -158,7 +151,6 @@ export default function Register() {
               )}
             ></Controller>
           </ListItem>
-
           <ListItem>
             <Controller
               name="confirmPassword"
@@ -179,8 +171,8 @@ export default function Register() {
                   helperText={
                     errors.confirmPassword
                       ? errors.confirmPassword.type === 'minLength'
-                        ? 'Confirm Password length is a least 6'
-                        : 'Confirm Password is required'
+                        ? 'Confirm Password length is more than 5'
+                        : 'Confirm  Password is required'
                       : ''
                   }
                   {...field}
@@ -194,7 +186,7 @@ export default function Register() {
             </Button>
           </ListItem>
           <ListItem>
-            Already have an account ? &nbsp;
+            Already have an account? &nbsp;
             <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
               <Link>Login</Link>
             </NextLink>
