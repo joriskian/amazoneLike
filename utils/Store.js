@@ -15,6 +15,9 @@ const initialSate = {
     shippingAddress: jsCookie.get('shippingAddress')
       ? JSON.parse(jsCookie.get('shippingAddress'))
       : {},
+    paymentMethod: jsCookie.get('paymentMethod')
+      ? jsCookie.get('paymentMehtod')
+      : '',
   },
   userInfo: {
     cartItems: jsCookie.get('userInfo')
@@ -60,10 +63,17 @@ function reducer(state, action) {
         ...state,
         cart: { ...state.cart, shippingAddress: action.payload },
       };
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        cart: { ...state.cart, paymentMethod: action.payload },
+      };
     case 'USER_LOGIN': {
+      console.log('USER_LOGIN is active :', action.payload);
       return { ...state, userInfo: action.payload };
     }
     case 'USER_LOGOUT': {
+      console.log('USER_LOGIN is desactivated !!!');
       return { ...state, userInfo: null, cart: { cartItems: [] } };
     }
     default:

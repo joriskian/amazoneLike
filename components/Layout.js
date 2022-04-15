@@ -78,6 +78,10 @@ export default function Layout({ title, description, children }) {
     router.push('/');
   };
 
+  console.log('typeof userInfo :', typeof userInfo);
+  const ob = JSON.stringify(userInfo);
+  console.log('object :', toString(ob.name));
+
   return (
     <div>
       <Head>
@@ -124,7 +128,7 @@ export default function Layout({ title, description, children }) {
                     aria-haspopup="true"
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
-                    color="succes"
+                    color="primary"
                   >
                     {userInfo.name}
                   </Button>

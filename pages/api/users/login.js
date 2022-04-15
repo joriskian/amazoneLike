@@ -14,11 +14,11 @@ handler.post(async (req, res) => {
   /**disconnect db  */
   await db.disconnect();
   /** send products */
-  //   if user exist checked the password
+  //   if user exist and  passwords match
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     // generate the token
     const token = signToken(user);
-    // server Response
+    // server response
     res.send({
       token,
       _id: user._id,

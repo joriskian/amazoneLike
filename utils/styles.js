@@ -45,6 +45,9 @@ const UseStyles = makeStyles({
     marginBottom: '10px',
     fontSize: '14px',
   },
+  transparentBackground: {
+    backgroundColor: 'transparent',
+  },
 });
 
 export default UseStyles;

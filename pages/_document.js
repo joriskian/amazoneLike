@@ -1,4 +1,3 @@
-// change the behavior to fix the styles  of material-ui
 import React from 'react';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
@@ -22,6 +21,7 @@ export default class MyDocument extends Document {
   }
 }
 
+// change the behavior to fix the styles  of material-ui
 MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;

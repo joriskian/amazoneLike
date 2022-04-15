@@ -10,7 +10,7 @@ import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 import useStyles from '../utils/styles';
-import Cookies from 'js-cookie';
+import jsCookie from 'js-cookie';
 import { Controller, useForm } from 'react-hook-form';
 import CheckoutWizard from '../components/CheckoutWizard';
 
@@ -27,17 +27,21 @@ export default function Shipping() {
     userInfo,
     cart: { shippingAddress }, //get the shipping address from the state
   } = state;
+
   useEffect(() => {
     if (!userInfo) {
       router.push('/login?redirect=/shipping');
     }
-    //get the adress info and put it in the form
-    setValue('fullName', shippingAddress.fullName);
-    setValue('address', shippingAddress.address);
-    setValue('city', shippingAddress.city);
-    setValue('postalCode', shippingAddress.postalCode);
-    setValue('country', shippingAddress.country);
-  }, []);
+    if (shippingAddress) {
+      console.log('type of shippingAdress', typeof shippingAddress);
+      //get the adress info and put it in the form
+      setValue('fullName', shippingAddress.fullName);
+      setValue('address', shippingAddress.address);
+      setValue('city', shippingAddress.city);
+      setValue('postalCode', shippingAddress.postalCode);
+      setValue('country', shippingAddress.country);
+    }
+  }, [router, setValue, shippingAddress, userInfo]);
 
   const classes = useStyles();
   const submitHandler = ({ fullName, address, city, postalCode, country }) => {
@@ -47,7 +51,7 @@ export default function Shipping() {
       payload: { fullName, address, city, postalCode, country },
     });
     //put in cookies
-    Cookies.set(
+    jsCookie.set(
       'shippingAddress',
       JSON.stringify({
         fullName,

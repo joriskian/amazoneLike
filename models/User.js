@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// if Product existe set the value in Product otherwise create a new one
+// if User existe set the value in Users database otherwise create a new one
 const User = mongoose.models.User || mongoose.model('Users', userSchema);
+console.log('user.name :', User.name);
 
 export default User;
