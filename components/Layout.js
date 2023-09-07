@@ -26,6 +26,7 @@ export default function Layout({ title, description, children }) {
   // use the context
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
+
   const theme = createTheme({
     typography: {
       h1: {
@@ -78,10 +79,6 @@ export default function Layout({ title, description, children }) {
     router.push('/');
   };
 
-  console.log('typeof userInfo :', typeof userInfo);
-  const ob = JSON.stringify(userInfo);
-  console.log('object :', toString(ob.name));
-
   return (
     <div>
       <Head>
@@ -121,6 +118,7 @@ export default function Layout({ title, description, children }) {
               </NextLink>
 
               {/* if userInfo exist show the button */}
+
               {userInfo ? (
                 <>
                   <Button
@@ -130,7 +128,7 @@ export default function Layout({ title, description, children }) {
                     className={classes.navbarButton}
                     color="primary"
                   >
-                    {userInfo.name}
+                    {userInfo.name || userInfo.cartItems.name}
                   </Button>
                   <Menu
                     id="simple-menu"

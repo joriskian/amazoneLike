@@ -33,7 +33,7 @@ const UseStyles = makeStyles({
   },
   navbarButton: {
     color: '#ffffff',
-    textTransform: 'initial',
+    textTransform: 'capitalize',
   },
   inputForm: {
     display: 'block',
@@ -47,6 +47,12 @@ const UseStyles = makeStyles({
   },
   transparentBackground: {
     backgroundColor: 'transparent',
+  },
+  error: {
+    color: '#f04040',
+  },
+  fullWidth: {
+    width: '100%',
   },
 });
 

@@ -47,10 +47,15 @@ function PlaceOrder() {
   const itemsPrice = round2(
     cartItems.reduce((a, c) => a + c.price * c.quantity, 0)
   );
+  // shipping price 15€ only for card under 200€
   const shippingPrice = itemsPrice > 200 ? 0 : 15;
+  // 15% de taxes
   const taxPrice = round2(itemsPrice * 0.15);
+  // total prix des marchandises + transport + taxes
   const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
+  // renvoi vers la page paiement si pas de methode paiement
+  // renvoi vers la page card si pas de marchandise
   useEffect(() => {
     if (!paymentMethod) {
       router.push('/payment');
@@ -58,17 +63,20 @@ function PlaceOrder() {
     if (cartItems.length === 0) {
       router.push('/cart');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const placeOrderHandler = async () => {
     closeSnackbar();
     try {
       setLoading(true);
+
       // send a ajax request to backend to create an order
       // first path , second data
       const { data } = await axios.post(
-        '/api/order',
+        '/api/orders',
         {
           orderItems: cartItems,
           shippingAddress,
@@ -82,7 +90,8 @@ function PlaceOrder() {
         // https://auth0.com/docs/secure/tokens/access-tokens
         {
           headers: {
-            authorisation: `Bearer ${userInfo.token}`,
+            // Authorization: 'Bearer' + userInfo.token,
+            authorization: `Bearer ${userInfo.token}`,
           },
         }
       );
@@ -91,14 +100,15 @@ function PlaceOrder() {
       setLoading(false);
       // route to the order details page
       router.push(`/order/${data._id}`);
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
-      enqueueSnackbar(getError(error), { variant: 'error' });
+      enqueueSnackbar(getError(err), { variant: 'error' });
+      // VariantType = 'default' | 'error' | 'success' | 'warning' | 'info';
     }
   };
 
   return (
-    <Layout title="Shopping Cart">
+    <Layout title="Place Order">
       <CheckoutWizard activeStep={3}></CheckoutWizard>
       <Typography component="h1" variant="h1">
         Place Order
